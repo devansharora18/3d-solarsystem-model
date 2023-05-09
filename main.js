@@ -15,11 +15,9 @@ scene.add(sun);
 
 const earthGeometry = new THREE.SphereGeometry(2, 32, 32);
 
-// Daytime texture
 const earthDayTexture = new THREE.TextureLoader().load('earth.png');
 const earthDayMaterial = new THREE.MeshBasicMaterial({ map: earthDayTexture });
 
-// Nighttime texture
 const earthNightTexture = new THREE.TextureLoader().load('earth_night.png');
 const earthNightMaterial = new THREE.MeshBasicMaterial({ map: earthNightTexture });
 
@@ -97,8 +95,8 @@ scene.add(venusPath);
 const calculateDayNightRatio = () => {
 	const now = new Date();
 
-	const sunrise = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 6, 0); // Example: 6:00 AM
-	const sunset = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 18, 0); // Example: 6:00 PM
+	const sunrise = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 6, 0);
+	const sunset = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 18, 0);
 
 	const totalDuration = sunset - sunrise;
 	const currentDuration = now - sunrise;
@@ -113,12 +111,12 @@ const dayNightThreshold = 1;
 const animate = () => {
 	requestAnimationFrame(animate);
 
-	const dayNightRatio = calculateDayNightRatio(); // Calculate day/night ratio based on time or other factors
+	const dayNightRatio = calculateDayNightRatio();
 	
 	if (dayNightRatio == dayNightThreshold) {
-		earth.material = earthNightMaterial; // Set daytime material
+		earth.material = earthNightMaterial;
 	} else {
-		earth.material = earthDayMaterial; // Set nighttime material
+		earth.material = earthDayMaterial;
 	}
 
 	sun.rotation.y += 0.005;
@@ -194,7 +192,12 @@ function onMouseUp() {
 function onMouseWheel(event) {
   const zoomSpeed = 0.1;
   const deltaZoom = event.deltaY * zoomSpeed;
-  camera.position.z -= deltaZoom;
+	if (camera.position.z - deltaZoom < 0)
+  camera.position.z = 0;
+	else if (camera.position.z - deltaZoom > 200)
+  camera.position.z = 200;
+	else
+	camera.position.z -= deltaZoom;
 	camera.lookAt(scene.position);
 }
 
