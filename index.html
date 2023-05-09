@@ -18,6 +18,9 @@
     renderer.setSize(window.innerWidth, window.innerHeight);
     document.body.appendChild(renderer.domElement);
 
+		const backgroundTexture = new THREE.TextureLoader().load('stars.jpg');
+    scene.background = backgroundTexture;
+
     // Create the sun
     const sunGeometry = new THREE.SphereGeometry(10, 32, 32);
     const sunTexture = new THREE.TextureLoader().load('sun.png');
