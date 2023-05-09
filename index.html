@@ -19,32 +19,35 @@
     document.body.appendChild(renderer.domElement);
 
     // Create the sun
-    var sunGeometry = new THREE.SphereGeometry(3, 32, 32);
-    var sunMaterial = new THREE.MeshBasicMaterial({ color: 0xffd700 });
+    var sunGeometry = new THREE.SphereGeometry(10, 32, 32);
+    var sunTexture = new THREE.TextureLoader().load('sun.png');
+    var sunMaterial = new THREE.MeshBasicMaterial({ map: sunTexture });
     var sun = new THREE.Mesh(sunGeometry, sunMaterial);
     scene.add(sun);
 
     // Create the Earth
-    var earthGeometry = new THREE.SphereGeometry(1, 32, 32);
-    var earthMaterial = new THREE.MeshBasicMaterial({ color: 0x0000ff });
+    var earthGeometry = new THREE.SphereGeometry(2, 32, 32);
+    var earthTexture = new THREE.TextureLoader().load('earth.png');
+    var earthMaterial = new THREE.MeshBasicMaterial({ map: earthTexture });
     var earth = new THREE.Mesh(earthGeometry, earthMaterial);
     scene.add(earth);
 
     // Set the Earth's position
-    earth.position.x = 8;
+    earth.position.x = 30;
 
     // Add some rotation animation
     function animate() {
       requestAnimationFrame(animate);
+      sun.rotation.y += 0.005;
       earth.rotation.y += 0.01;
-      earth.position.x = 8 * Math.cos(Date.now() * 0.001);
-      earth.position.z = 8 * Math.sin(Date.now() * 0.001);
+      earth.position.x = 30 * Math.cos(Date.now() * 0.0004);
+      earth.position.z = 30 * Math.sin(Date.now() * 0.0004);
       renderer.render(scene, camera);
     }
     animate();
 
     // Adjust the camera position
-    camera.position.z = 15;
+    camera.position.z = 50;
   </script>
 </body>
 </html>
