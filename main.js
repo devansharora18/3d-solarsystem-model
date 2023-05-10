@@ -137,7 +137,7 @@ const animate = () => {
 }
 animate();
 
-camera.position.set(0, 30, 50);
+camera.position.set(0, 30, 60);
 camera.rotation.set(-Math.PI / 6, 0, 0);
 
 let isDragging = false;
