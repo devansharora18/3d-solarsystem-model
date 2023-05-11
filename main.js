@@ -139,6 +139,84 @@ const jupiterPath = new THREE.Line(jupiterPathGeometry, jupiterPathMaterial);
 
 scene.add(jupiterPath);
 
+const saturnGeometry = new THREE.SphereGeometry(5, 32, 32);
+const saturnTexture = new THREE.TextureLoader().load('saturn.png');
+const saturnMaterial = new THREE.MeshBasicMaterial({ map: saturnTexture })
+const saturn = new THREE.Mesh(saturnGeometry, saturnMaterial);
+
+scene.add(saturn);
+
+saturn.position.x = 150;
+
+const saturnPathPoints = [];
+const saturnRadius = 150;
+const saturnSegments = 100;
+for (let i = 0; i <= saturnSegments; i++) {
+	const theta = (i / saturnSegments) * Math.PI * 2;
+  const x = saturnRadius * Math.cos(theta);
+  const z = saturnRadius * Math.sin(theta);
+  saturnPathPoints.push(new THREE.Vector3(x, 0, z));
+}
+const saturnPathGeometry = new THREE.BufferGeometry().setFromPoints(saturnPathPoints);
+const saturnPathMaterial = new THREE.LineBasicMaterial({ color: "rgb(255, 255, 255)" });
+const saturnPath = new THREE.Line(saturnPathGeometry, saturnPathMaterial);
+scene.add(saturnPath);
+
+const saturnRingsGeometry = new THREE.RingGeometry(6, 10, 64);
+const saturnRingsTexture = new THREE.TextureLoader().load('saturn-ring.png');
+const saturnRingsMaterial = new THREE.MeshBasicMaterial({ map: saturnRingsTexture, side: THREE.DoubleSide, transparent: true });
+const saturnRings = new THREE.Mesh(saturnRingsGeometry, saturnRingsMaterial);
+saturn.add(saturnRings);
+
+saturnRings.rotation.x = Math.PI / 2;
+
+const uranusGeometry = new THREE.SphereGeometry(3.5, 32, 32);
+const uranusTexture = new THREE.TextureLoader().load('uranus.png');
+const uranusMaterial = new THREE.MeshBasicMaterial({ map: uranusTexture })
+
+const uranus = new THREE.Mesh(uranusGeometry, uranusMaterial);
+scene.add(uranus);
+
+uranus.position.x = 180;
+
+const uranusPathPoints = [];
+const uranusRadius = 180;
+const uranusSegments = 100;
+for (let i = 0; i <= uranusSegments; i++) {
+	const theta = (i / uranusSegments) * Math.PI * 2;
+  const x = uranusRadius * Math.cos(theta);
+  const z = uranusRadius * Math.sin(theta);
+  uranusPathPoints.push(new THREE.Vector3(x, 0, z));
+}
+const uranusPathGeometry = new THREE.BufferGeometry().setFromPoints(uranusPathPoints);
+const uranusPathMaterial = new THREE.LineBasicMaterial({ color: "rgb(255, 255, 255)" })
+const uranusPath = new THREE.Line(uranusPathGeometry, uranusPathMaterial);
+scene.add(uranusPath);
+
+const neptuneGeometry = new THREE.SphereGeometry(3.5, 32, 32);
+const neptuneTexture = new THREE.TextureLoader().load('neptune.png');
+const neptuneMaterial = new THREE.MeshBasicMaterial({ map: neptuneTexture });
+
+
+const neptune = new THREE.Mesh(neptuneGeometry, neptuneMaterial);
+scene.add(neptune);
+
+neptune.position.x = 200;
+
+const neptunePathPoints = [];
+const neptuneRadius = 200;
+const neptuneSegments = 100;
+for (let i = 0; i <= neptuneSegments; i++) {
+	const theta = (i / neptuneSegments) * Math.PI * 2;
+  const x = neptuneRadius * Math.cos(theta);
+  const z = neptuneRadius * Math.sin(theta);
+  neptunePathPoints.push(new THREE.Vector3(x, 0, z));
+}
+const neptunePathGeometry = new THREE.BufferGeometry().setFromPoints(neptunePathPoints);
+const neptunePathMaterial = new THREE.LineBasicMaterial({ color: "rgb(255, 255, 255)" });
+const neptunePath = new THREE.Line(neptunePathGeometry, neptunePathMaterial);
+scene.add(neptunePath);
+
 const asteroidGeometry = new THREE.SphereGeometry(0.2, 10, 10);
 const asteroidMaterial = new THREE.MeshBasicMaterial({ color: 0x888888 });
 
@@ -216,6 +294,20 @@ const animate = () => {
 	jupiter.position.x = 100 * Math.cos(Date.now() * 0.00005);
 	jupiter.position.z = 100 * Math.sin(Date.now() * 0.00005);
 
+	saturn.rotation.y += 0.07;
+	saturn.position.x = 150 * Math.cos(Date.now() * 0.00002);
+	saturn.position.z = 150 * Math.sin(Date.now() * 0.00002);
+
+	uranus.rotation.y += 0.07;
+	uranus.position.x = 180 * Math.cos(Date.now() * 0.00001);
+	uranus.position.z = 180 * Math.sin(Date.now() * 0.00001);
+
+	neptune.rotation.y += 0.07;
+	neptune.position.x = 200 * Math.cos(Date.now() * 0.000005);
+	neptune.position.z = 200 * Math.sin(Date.now() * 0.000005);
+
+	//saturnRings.rotation.x += 0.07;
+
   for (let i = 0; i < asteroids.length; i++) {
     const asteroid = asteroids[i];
 
@@ -236,7 +328,7 @@ const animate = () => {
 }
 animate();
 
-camera.position.set(0, 30, 80);
+camera.position.set(0, 30, 100);
 camera.rotation.set(-Math.PI / 6, 0, 0);
 camera.lookAt(scene.position);
 
