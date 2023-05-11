@@ -122,10 +122,10 @@ const jupiter = new THREE.Mesh(jupiterGeometry, jupiterMaterial);
 
 scene.add(jupiter);
 
-jupiter.position.x = 80;
+jupiter.position.x = 100;
 
 const jupiterPathPoints = [];
-const jupiterRadius = 80;
+const jupiterRadius = 100;
 const jupiterSegments = 100;
 for (let i = 0; i <= jupiterSegments; i++) {
 	const theta = (i / jupiterSegments) * Math.PI * 2;
@@ -138,6 +138,33 @@ const jupiterPathMaterial = new THREE.LineBasicMaterial({ color: "rgb(255, 255, 
 const jupiterPath = new THREE.Line(jupiterPathGeometry, jupiterPathMaterial);
 
 scene.add(jupiterPath);
+
+const asteroidGeometry = new THREE.SphereGeometry(0.2, 16, 16);
+const asteroidMaterial = new THREE.MeshBasicMaterial({ color: 0x888888 });
+
+const numAsteroids = 1000;
+const asteroidBeltRadius = 70;
+const asteroids = [];
+
+const minRadius = 70;
+const maxRadius = 80;
+const beltRadius = [];
+
+for (let i = 0; i < numAsteroids; i++) {
+  const asteroid = new THREE.Mesh(asteroidGeometry, asteroidMaterial);
+  asteroids.push(asteroid);
+
+  const angle = Math.random() * Math.PI * 5;
+  const radius = Math.random() * (maxRadius - minRadius) + minRadius; // Random radius between minRadius and maxRadius
+  beltRadius.push(radius);
+	const x = Math.cos(angle) * radius;
+  const z = Math.sin(angle) * asteroidBeltRadius;
+  const y = Math.random() * 2 - 1;
+
+  asteroid.position.set(x, y, z);
+
+  scene.add(asteroid);
+}
 
 
 const calculateDayNightRatio = () => {
@@ -185,9 +212,25 @@ const animate = () => {
 	mars.position.x = 50 * Math.cos(Date.now() * 0.0008);
 	mars.position.z = 50 * Math.sin(Date.now() * 0.0008);
 
-	jupiter.rotation.y += 0.0054;
-	jupiter.position.x = 80 * Math.cos(Date.now() * 0.0002);
-	jupiter.position.z = 80 * Math.sin(Date.now() * 0.0002);
+	jupiter.rotation.y += 0.002;
+	jupiter.position.x = 100 * Math.cos(Date.now() * 0.00005);
+	jupiter.position.z = 100 * Math.sin(Date.now() * 0.00005);
+
+  for (let i = 0; i < asteroids.length; i++) {
+    const asteroid = asteroids[i];
+
+    asteroid.rotation.y += 0.01;
+
+		const radius = Math.random() * (maxRadius - minRadius) + minRadius;
+
+    const angle = (i / asteroids.length) * Math.PI * 2 + (Date.now() * 0.0000001 * i * beltRadius[i]/100);
+
+    const x = Math.cos(angle) * beltRadius[i];
+    const z = Math.sin(angle) * beltRadius[i];
+		
+    asteroid.position.set(x, asteroid.position.y, z);
+  }
+
 	
 	renderer.render(scene, camera);
 }
@@ -251,7 +294,7 @@ function onMouseWheel(event) {
   const deltaZoom = event.deltaY * zoomSpeed;
 	if (camera.position.z - deltaZoom < 0)
   camera.position.z = 0;
-	else if (camera.position.z - deltaZoom > 200)
+	else if (camera.position.z - deltaZoom > 300)
   camera.position.z = 300;
 	else
 	camera.position.z -= deltaZoom;
