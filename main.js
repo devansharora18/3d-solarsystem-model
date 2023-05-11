@@ -244,33 +244,8 @@ for (let i = 0; i < numAsteroids; i++) {
   scene.add(asteroid);
 }
 
-
-const calculateDayNightRatio = () => {
-	const now = new Date();
-
-	const sunrise = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 6, 0);
-	const sunset = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 18, 0);
-
-	const totalDuration = sunset - sunrise;
-	const currentDuration = now - sunrise;
-
-	const dayNightRatio = Math.max(0, Math.min(1, currentDuration / totalDuration))
-	//console.log(dayNightRatio);
-	return dayNightRatio;
-}
-
-const dayNightThreshold = 1;
-
 const animate = () => {
 	requestAnimationFrame(animate);
-
-	const dayNightRatio = calculateDayNightRatio();
-	
-	if (dayNightRatio == dayNightThreshold) {
-		earth.material = earthNightMaterial;
-	} else {
-		earth.material = earthDayMaterial;
-	}
 
 	sun.rotation.y += 0.005;
 	
