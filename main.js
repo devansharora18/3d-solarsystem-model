@@ -91,6 +91,30 @@ const venusPathMaterial = new THREE.LineBasicMaterial({ color: "rgb(255, 255, 25
 const venusPath = new THREE.Line(venusPathGeometry, venusPathMaterial);
 scene.add(venusPath);
 
+const marsGeometry = new THREE.SphereGeometry(1.8, 32, 32);
+const marsTexture = new THREE.TextureLoader().load('mars.png');
+const marsMaterial = new THREE.MeshBasicMaterial({ map: marsTexture });
+const mars = new THREE.Mesh(marsGeometry, marsMaterial);
+
+scene.add(mars);
+
+venus.position.x = 50;
+
+const marsPathPoints = [];
+const marsRadius = 50;
+const marsSegments = 100;
+for (let i = 0; i <= marsSegments; i++) {
+  const theta = (i / marsSegments) * Math.PI * 2;
+  const x = marsRadius * Math.cos(theta);
+  const z = marsRadius * Math.sin(theta);
+  marsPathPoints.push(new THREE.Vector3(x, 0, z));
+}
+
+const marsPathGeometry = new THREE.BufferGeometry().setFromPoints(marsPathPoints);
+const marsPathMaterial = new THREE.LineBasicMaterial({ color: "rgb(255, 255, 255)" });;
+const marsPath = new THREE.Line(marsPathGeometry, marsPathMaterial);
+scene.add(marsPath);
+
 
 const calculateDayNightRatio = () => {
 	const now = new Date();
@@ -132,13 +156,18 @@ const animate = () => {
 	mercury.rotation.y += 0.004;
 	mercury.position.x = 18 * Math.cos(Date.now() * 0.002);
 	mercury.position.z = 18 * Math.sin(Date.now() * 0.002);
+
+	mars.rotation.y += 0.004;
+	mars.position.x = 50 * Math.cos(Date.now() * 0.0008);
+	mars.position.z = 50 * Math.sin(Date.now() * 0.0008);
 	
 	renderer.render(scene, camera);
 }
 animate();
 
-camera.position.set(0, 30, 60);
+camera.position.set(0, 30, 80);
 camera.rotation.set(-Math.PI / 6, 0, 0);
+camera.lookAt(scene.position);
 
 let isDragging = false;
 let previousMousePosition = {
@@ -195,7 +224,7 @@ function onMouseWheel(event) {
 	if (camera.position.z - deltaZoom < 0)
   camera.position.z = 0;
 	else if (camera.position.z - deltaZoom > 200)
-  camera.position.z = 200;
+  camera.position.z = 300;
 	else
 	camera.position.z -= deltaZoom;
 	camera.lookAt(scene.position);
