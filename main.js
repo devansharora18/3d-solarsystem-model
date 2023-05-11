@@ -12,18 +12,19 @@ const sunTexture = new THREE.TextureLoader().load('sun.png');
 const sunMaterial = new THREE.MeshBasicMaterial({ map: sunTexture });
 const sun = new THREE.Mesh(sunGeometry, sunMaterial);
 scene.add(sun);
+sun.name = 'sun';
+
+const planets = []
 
 const earthGeometry = new THREE.SphereGeometry(2, 32, 32);
 
 const earthDayTexture = new THREE.TextureLoader().load('earth.png');
 const earthDayMaterial = new THREE.MeshBasicMaterial({ map: earthDayTexture });
 
-const earthNightTexture = new THREE.TextureLoader().load('earth_night.png');
-const earthNightMaterial = new THREE.MeshBasicMaterial({ map: earthNightTexture });
-
-
 const earth = new THREE.Mesh(earthGeometry, earthDayMaterial);
 scene.add(earth);
+planets.push(earth);
+earth.name = 'earth';
 
 earth.position.x = 40;
 
@@ -48,6 +49,8 @@ const mercuryMaterial = new THREE.MeshBasicMaterial({ map: mercuryTexture });
 const mercury = new THREE.Mesh(mercuryGeometry, mercuryMaterial);
 
 scene.add(mercury);
+planets.push(mercury);
+mercury.name = 'mercury';
 
 mercury.position.x = 18;
 
@@ -73,6 +76,8 @@ const venusMaterial = new THREE.MeshBasicMaterial({ map: venusTexture });
 const venus = new THREE.Mesh(venusGeometry, venusMaterial);
 
 scene.add(venus);
+planets.push(venus);
+venus.name = 'venus';
 
 venus.position.x = 30;
 
@@ -97,6 +102,8 @@ const marsMaterial = new THREE.MeshBasicMaterial({ map: marsTexture });
 const mars = new THREE.Mesh(marsGeometry, marsMaterial);
 
 scene.add(mars);
+planets.push(mars);
+mars.name = 'mars';
 
 mars.position.x = 50;
 
@@ -122,6 +129,9 @@ const jupiter = new THREE.Mesh(jupiterGeometry, jupiterMaterial);
 
 scene.add(jupiter);
 
+planets.push(jupiter);
+jupiter.name = 'jupiter';
+
 jupiter.position.x = 100;
 
 const jupiterPathPoints = [];
@@ -145,6 +155,8 @@ const saturnMaterial = new THREE.MeshBasicMaterial({ map: saturnTexture })
 const saturn = new THREE.Mesh(saturnGeometry, saturnMaterial);
 
 scene.add(saturn);
+planets.push(saturn);
+saturn.name = 'saturn';
 
 saturn.position.x = 150;
 
@@ -177,6 +189,9 @@ const uranusMaterial = new THREE.MeshBasicMaterial({ map: uranusTexture })
 const uranus = new THREE.Mesh(uranusGeometry, uranusMaterial);
 scene.add(uranus);
 
+planets.push(uranus);
+uranus.name = 'uranus';
+
 uranus.position.x = 180;
 
 const uranusPathPoints = [];
@@ -200,6 +215,9 @@ const neptuneMaterial = new THREE.MeshBasicMaterial({ map: neptuneTexture });
 
 const neptune = new THREE.Mesh(neptuneGeometry, neptuneMaterial);
 scene.add(neptune);
+
+planets.push(neptune);
+neptune.name = 'neptune';
 
 neptune.position.x = 200;
 
@@ -243,6 +261,8 @@ for (let i = 0; i < numAsteroids; i++) {
 
   scene.add(asteroid);
 }
+
+let focused_object = null;
 
 const animate = () => {
 	requestAnimationFrame(animate);
@@ -296,12 +316,83 @@ const animate = () => {
     const z = Math.sin(angle) * beltRadius[i];
 		
     asteroid.position.set(x, asteroid.position.y, z);
-  }
+	}
+
+
+	if (focused_object != null) {
+		camera.lookAt(focused_object.position);
+		camera.position.set(focused_object.position.x, focused_object.position.y + 10, focused_object.position.z + 30);	
+	}
 
 	
 	renderer.render(scene, camera);
 }
 animate();
+
+renderer.domElement.addEventListener('click', onMouseClick, false);
+
+function onMouseClick(event) {
+	console.log('mouse click');
+  // Calculate mouse position in normalized device coordinates
+  const mouse = new THREE.Vector2();
+  mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+  mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+  // Cast a ray from the mouse position
+  const raycaster = new THREE.Raycaster();
+  raycaster.setFromCamera(mouse, camera);
+
+  // Check for intersections with the objects in the scene
+  const intersects = raycaster.intersectObjects(scene.children, true);
+
+  if (intersects.length > 0) {
+		console.log('intersected');
+    // An object was clicked
+    const clickedObject = intersects[0].object;
+		console.log(clickedObject.name);
+
+    // Check the identifier of the clicked object and execute the corresponding function
+    switch (clickedObject.name) {
+      case 'sun':
+				console.log('sun')
+        focused_object = sun;
+        break;
+      case 'earth':
+				console.log('earth')
+        focused_object = earth;
+				break;
+			case 'venus':
+				console.log('venus')
+        focused_object = venus;
+				break;
+			case 'mercury':
+				console.log('mercury')
+        focused_object = mercury;
+				break;
+			case 'mars':
+				console.log('mars')
+        focused_object = mars;
+				break;
+			case 'jupiter':
+				console.log('jupiter')
+        focused_object = jupiter;
+				break;
+			case 'saturn':
+				console.log('saturn')
+        focused_object = saturn;
+				break;
+			case 'uranus':
+				console.log('uranus')
+        focused_object = uranus;
+				break;
+			case 'neptune':
+				console.log('neptune')
+        focused_object = neptune;
+				break;
+    }
+  }
+}
+
 
 camera.position.set(0, 30, 100);
 camera.rotation.set(-Math.PI / 6, 0, 0);
@@ -344,7 +435,7 @@ function onMouseMove(event) {
   const quaternion = new THREE.Quaternion().setFromEuler(rotation);
 
   camera.position.applyQuaternion(quaternion);
-  camera.lookAt(scene.position);
+  //camera.lookAt(scene.position);
 
   previousMousePosition = {
     x: event.clientX,
@@ -365,9 +456,21 @@ function onMouseWheel(event) {
   camera.position.z = 300;
 	else
 	camera.position.z -= deltaZoom;
-	camera.lookAt(scene.position);
+	//camera.lookAt(scene.position);
 }
 
 function toRadians(angle) {
   return angle * (Math.PI / 180);
 }
+
+function reset(event) {
+	camera.position.set(0, 30, 100);
+	camera.rotation.set(-Math.PI / 6, 0, 0);
+	camera.lookAt(scene.position);
+	focused_object = null;
+	console.log('reset');
+
+}
+
+let button = document.getElementById('reset-btn');
+button.addEventListener('click', reset);
