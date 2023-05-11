@@ -98,7 +98,7 @@ const mars = new THREE.Mesh(marsGeometry, marsMaterial);
 
 scene.add(mars);
 
-venus.position.x = 50;
+mars.position.x = 50;
 
 const marsPathPoints = [];
 const marsRadius = 50;
@@ -114,6 +114,30 @@ const marsPathGeometry = new THREE.BufferGeometry().setFromPoints(marsPathPoints
 const marsPathMaterial = new THREE.LineBasicMaterial({ color: "rgb(255, 255, 255)" });;
 const marsPath = new THREE.Line(marsPathGeometry, marsPathMaterial);
 scene.add(marsPath);
+
+const jupiterGeometry = new THREE.SphereGeometry(5, 32, 32);
+const jupiterTexture = new THREE.TextureLoader().load('jupiter.png');
+const jupiterMaterial = new THREE.MeshBasicMaterial({ map: jupiterTexture });
+const jupiter = new THREE.Mesh(jupiterGeometry, jupiterMaterial);
+
+scene.add(jupiter);
+
+jupiter.position.x = 80;
+
+const jupiterPathPoints = [];
+const jupiterRadius = 80;
+const jupiterSegments = 100;
+for (let i = 0; i <= jupiterSegments; i++) {
+	const theta = (i / jupiterSegments) * Math.PI * 2;
+  const x = jupiterRadius * Math.cos(theta);
+  const z = jupiterRadius * Math.sin(theta);
+  jupiterPathPoints.push(new THREE.Vector3(x, 0, z));
+}
+const jupiterPathGeometry = new THREE.BufferGeometry().setFromPoints(jupiterPathPoints);
+const jupiterPathMaterial = new THREE.LineBasicMaterial({ color: "rgb(255, 255, 255)" });
+const jupiterPath = new THREE.Line(jupiterPathGeometry, jupiterPathMaterial);
+
+scene.add(jupiterPath);
 
 
 const calculateDayNightRatio = () => {
@@ -160,6 +184,10 @@ const animate = () => {
 	mars.rotation.y += 0.004;
 	mars.position.x = 50 * Math.cos(Date.now() * 0.0008);
 	mars.position.z = 50 * Math.sin(Date.now() * 0.0008);
+
+	jupiter.rotation.y += 0.0054;
+	jupiter.position.x = 80 * Math.cos(Date.now() * 0.0002);
+	jupiter.position.z = 80 * Math.sin(Date.now() * 0.0002);
 	
 	renderer.render(scene, camera);
 }
