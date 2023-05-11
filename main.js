@@ -139,7 +139,7 @@ const jupiterPath = new THREE.Line(jupiterPathGeometry, jupiterPathMaterial);
 
 scene.add(jupiterPath);
 
-const asteroidGeometry = new THREE.SphereGeometry(0.2, 16, 16);
+const asteroidGeometry = new THREE.SphereGeometry(0.2, 10, 10);
 const asteroidMaterial = new THREE.MeshBasicMaterial({ color: 0x888888 });
 
 const numAsteroids = 1000;
@@ -212,7 +212,7 @@ const animate = () => {
 	mars.position.x = 50 * Math.cos(Date.now() * 0.0008);
 	mars.position.z = 50 * Math.sin(Date.now() * 0.0008);
 
-	jupiter.rotation.y += 0.002;
+	jupiter.rotation.y += 0.07;
 	jupiter.position.x = 100 * Math.cos(Date.now() * 0.00005);
 	jupiter.position.z = 100 * Math.sin(Date.now() * 0.00005);
 
