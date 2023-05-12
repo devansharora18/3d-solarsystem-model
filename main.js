@@ -321,7 +321,9 @@ const animate = () => {
 
 	if (focused_object != null) {
 		camera.lookAt(focused_object.position);
-		camera.position.set(focused_object.position.x, focused_object.position.y + 10, focused_object.position.z + 30);	
+		camera.position.set(focused_object.position.x, focused_object.position.y + 10, focused_object.position.z - 30);	
+	} else {
+		camera.lookAt(scene.position);
 	}
 
 	
@@ -474,3 +476,43 @@ function reset(event) {
 
 let button = document.getElementById('reset-btn');
 button.addEventListener('click', reset);
+
+let mercury_btn = document.getElementById('mercury');
+mercury_btn.addEventListener('click', function(event) {
+	focused_object = mercury;
+});
+
+let venus_btn = document.getElementById('venus');
+venus_btn.addEventListener('click', function(event) {
+	focused_object = venus;
+});
+
+let earth_btn = document.getElementById('earth');
+earth_btn.addEventListener('click', function(event) {
+	focused_object = earth;
+});
+
+let mars_btn = document.getElementById('mars');
+mars_btn.addEventListener('click', function(event) {
+	focused_object = mars;
+});
+
+let jupiter_btn = document.getElementById('jupiter');
+jupiter_btn.addEventListener('click', function(event) {
+	focused_object = jupiter;
+});
+
+let saturn_btn = document.getElementById('saturn');
+saturn_btn.addEventListener('click', function(event) {
+	focused_object = saturn;
+});
+
+let uranus_btn = document.getElementById('uranus');
+uranus_btn.addEventListener('click', function(event) {
+	focused_object = uranus;
+});
+
+let neptune_btn = document.getElementById('neptune');
+neptune_btn.addEventListener('click', function(event) {
+	focused_object = neptune;
+});

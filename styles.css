@@ -14,9 +14,26 @@ body {
 	z-index: 1;
   }
   
-  #reset-btn {
-	position: absolute;
-	top: 20px;
+  .btn {
+	/*position: absolute;*/
+	/*top: 20px;*/
 	left: 20px;
 	z-index: 2;
+	width: 100px;
+	margin: 7px;
   }
+
+
+.btn-info {
+	background-color: #000;
+	color: #fff;
+}
+
+
+
+
+.column {
+	/*margin-top: 10px;*/
+	display: flex;
+	flex-direction: column;
+}
