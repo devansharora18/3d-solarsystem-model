@@ -41,7 +41,7 @@ for (let i = 0; i <= segments; i++) {
 const pathGeometry = new THREE.BufferGeometry().setFromPoints(pathPoints);
 const pathMaterial = new THREE.LineBasicMaterial({ color: "rgb(255, 255, 255)" });;
 const path = new THREE.Line(pathGeometry, pathMaterial);
-// scene.add(path);
+scene.add(path);
 
 const mercuryGeometry = new THREE.SphereGeometry(1, 32, 32);
 const mercuryTexture = new THREE.TextureLoader().load('mercury.jpeg');
@@ -67,7 +67,7 @@ for (let i = 0; i <= mercurySegments; i++) {
 const mercuryPathGeometry = new THREE.BufferGeometry().setFromPoints(mercuryPathPoints);
 const mercuryPathMaterial = new THREE.LineBasicMaterial({ color: "rgb(255, 255, 255)" });;
 const mercuryPath = new THREE.Line(mercuryPathGeometry, mercuryPathMaterial);
-// scene.add(mercuryPath);
+scene.add(mercuryPath);
 
 
 const venusGeometry = new THREE.SphereGeometry(1.8, 32, 32);
@@ -94,7 +94,7 @@ for (let i = 0; i <= venusSegments; i++) {
 const venusPathGeometry = new THREE.BufferGeometry().setFromPoints(venusPathPoints);
 const venusPathMaterial = new THREE.LineBasicMaterial({ color: "rgb(255, 255, 255)" });;
 const venusPath = new THREE.Line(venusPathGeometry, venusPathMaterial);
-// scene.add(venusPath);
+scene.add(venusPath);
 
 const marsGeometry = new THREE.SphereGeometry(1.8, 32, 32);
 const marsTexture = new THREE.TextureLoader().load('mars.jpeg');
@@ -120,7 +120,7 @@ for (let i = 0; i <= marsSegments; i++) {
 const marsPathGeometry = new THREE.BufferGeometry().setFromPoints(marsPathPoints);
 const marsPathMaterial = new THREE.LineBasicMaterial({ color: "rgb(255, 255, 255)" });;
 const marsPath = new THREE.Line(marsPathGeometry, marsPathMaterial);
-// scene.add(marsPath);
+scene.add(marsPath);
 
 const jupiterGeometry = new THREE.SphereGeometry(5, 32, 32);
 const jupiterTexture = new THREE.TextureLoader().load('jupiter.jpeg');
@@ -147,7 +147,7 @@ const jupiterPathGeometry = new THREE.BufferGeometry().setFromPoints(jupiterPath
 const jupiterPathMaterial = new THREE.LineBasicMaterial({ color: "rgb(255, 255, 255)" });
 const jupiterPath = new THREE.Line(jupiterPathGeometry, jupiterPathMaterial);
 
-// scene.add(jupiterPath);
+scene.add(jupiterPath);
 
 const saturnGeometry = new THREE.SphereGeometry(5, 32, 32);
 const saturnTexture = new THREE.TextureLoader().load('saturn.jpeg');
@@ -172,7 +172,7 @@ for (let i = 0; i <= saturnSegments; i++) {
 const saturnPathGeometry = new THREE.BufferGeometry().setFromPoints(saturnPathPoints);
 const saturnPathMaterial = new THREE.LineBasicMaterial({ color: "rgb(255, 255, 255)" });
 const saturnPath = new THREE.Line(saturnPathGeometry, saturnPathMaterial);
-// scene.add(saturnPath);
+scene.add(saturnPath);
 
 const saturnRingsGeometry = new THREE.RingGeometry(6, 10, 64);
 const saturnRingsTexture = new THREE.TextureLoader().load('saturn-ring.jpeg');
@@ -206,7 +206,7 @@ for (let i = 0; i <= uranusSegments; i++) {
 const uranusPathGeometry = new THREE.BufferGeometry().setFromPoints(uranusPathPoints);
 const uranusPathMaterial = new THREE.LineBasicMaterial({ color: "rgb(255, 255, 255)" })
 const uranusPath = new THREE.Line(uranusPathGeometry, uranusPathMaterial);
-// scene.add(uranusPath);
+scene.add(uranusPath);
 
 const neptuneGeometry = new THREE.SphereGeometry(3.5, 32, 32);
 const neptuneTexture = new THREE.TextureLoader().load('neptune.jpeg');
@@ -233,7 +233,7 @@ for (let i = 0; i <= neptuneSegments; i++) {
 const neptunePathGeometry = new THREE.BufferGeometry().setFromPoints(neptunePathPoints);
 const neptunePathMaterial = new THREE.LineBasicMaterial({ color: "rgb(255, 255, 255)" });
 const neptunePath = new THREE.Line(neptunePathGeometry, neptunePathMaterial);
-// scene.add(neptunePath);
+scene.add(neptunePath);
 
 const asteroidGeometry = new THREE.SphereGeometry(0.2, 10, 10);
 const asteroidMaterial = new THREE.MeshBasicMaterial({ color: 0x888888 });
