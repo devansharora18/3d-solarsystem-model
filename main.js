@@ -4,11 +4,11 @@ const renderer = new THREE.WebGLRenderer();
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 
-const backgroundTexture = new THREE.TextureLoader().load('stars.jpg');
+const backgroundTexture = new THREE.TextureLoader().load('black.jpeg');
 scene.background = backgroundTexture;
 
 const sunGeometry = new THREE.SphereGeometry(10, 32, 32);
-const sunTexture = new THREE.TextureLoader().load('sun.png');
+const sunTexture = new THREE.TextureLoader().load('sun.jpeg');
 const sunMaterial = new THREE.MeshBasicMaterial({ map: sunTexture });
 const sun = new THREE.Mesh(sunGeometry, sunMaterial);
 scene.add(sun);
@@ -18,7 +18,7 @@ const planets = []
 
 const earthGeometry = new THREE.SphereGeometry(2, 32, 32);
 
-const earthDayTexture = new THREE.TextureLoader().load('earth.png');
+const earthDayTexture = new THREE.TextureLoader().load('earth.jpeg');
 const earthDayMaterial = new THREE.MeshBasicMaterial({ map: earthDayTexture });
 
 const earth = new THREE.Mesh(earthGeometry, earthDayMaterial);
@@ -44,7 +44,7 @@ const path = new THREE.Line(pathGeometry, pathMaterial);
 scene.add(path);
 
 const mercuryGeometry = new THREE.SphereGeometry(1, 32, 32);
-const mercuryTexture = new THREE.TextureLoader().load('mercury.png');
+const mercuryTexture = new THREE.TextureLoader().load('mercury.jpeg');
 const mercuryMaterial = new THREE.MeshBasicMaterial({ map: mercuryTexture });
 const mercury = new THREE.Mesh(mercuryGeometry, mercuryMaterial);
 
@@ -71,7 +71,7 @@ scene.add(mercuryPath);
 
 
 const venusGeometry = new THREE.SphereGeometry(1.8, 32, 32);
-const venusTexture = new THREE.TextureLoader().load('venus.png');
+const venusTexture = new THREE.TextureLoader().load('venus.jpeg');
 const venusMaterial = new THREE.MeshBasicMaterial({ map: venusTexture });
 const venus = new THREE.Mesh(venusGeometry, venusMaterial);
 
@@ -97,7 +97,7 @@ const venusPath = new THREE.Line(venusPathGeometry, venusPathMaterial);
 scene.add(venusPath);
 
 const marsGeometry = new THREE.SphereGeometry(1.8, 32, 32);
-const marsTexture = new THREE.TextureLoader().load('mars.png');
+const marsTexture = new THREE.TextureLoader().load('mars.jpeg');
 const marsMaterial = new THREE.MeshBasicMaterial({ map: marsTexture });
 const mars = new THREE.Mesh(marsGeometry, marsMaterial);
 
@@ -123,7 +123,7 @@ const marsPath = new THREE.Line(marsPathGeometry, marsPathMaterial);
 scene.add(marsPath);
 
 const jupiterGeometry = new THREE.SphereGeometry(5, 32, 32);
-const jupiterTexture = new THREE.TextureLoader().load('jupiter.png');
+const jupiterTexture = new THREE.TextureLoader().load('jupiter.jpeg');
 const jupiterMaterial = new THREE.MeshBasicMaterial({ map: jupiterTexture });
 const jupiter = new THREE.Mesh(jupiterGeometry, jupiterMaterial);
 
@@ -150,7 +150,7 @@ const jupiterPath = new THREE.Line(jupiterPathGeometry, jupiterPathMaterial);
 scene.add(jupiterPath);
 
 const saturnGeometry = new THREE.SphereGeometry(5, 32, 32);
-const saturnTexture = new THREE.TextureLoader().load('saturn.png');
+const saturnTexture = new THREE.TextureLoader().load('saturn.jpeg');
 const saturnMaterial = new THREE.MeshBasicMaterial({ map: saturnTexture })
 const saturn = new THREE.Mesh(saturnGeometry, saturnMaterial);
 
@@ -175,7 +175,7 @@ const saturnPath = new THREE.Line(saturnPathGeometry, saturnPathMaterial);
 scene.add(saturnPath);
 
 const saturnRingsGeometry = new THREE.RingGeometry(6, 10, 64);
-const saturnRingsTexture = new THREE.TextureLoader().load('saturn-ring.png');
+const saturnRingsTexture = new THREE.TextureLoader().load('saturn-ring.jpeg');
 const saturnRingsMaterial = new THREE.MeshBasicMaterial({ map: saturnRingsTexture, side: THREE.DoubleSide, transparent: true });
 const saturnRings = new THREE.Mesh(saturnRingsGeometry, saturnRingsMaterial);
 saturn.add(saturnRings);
@@ -183,7 +183,7 @@ saturn.add(saturnRings);
 saturnRings.rotation.x = Math.PI / 2;
 
 const uranusGeometry = new THREE.SphereGeometry(3.5, 32, 32);
-const uranusTexture = new THREE.TextureLoader().load('uranus.png');
+const uranusTexture = new THREE.TextureLoader().load('uranus.jpeg');
 const uranusMaterial = new THREE.MeshBasicMaterial({ map: uranusTexture })
 
 const uranus = new THREE.Mesh(uranusGeometry, uranusMaterial);
@@ -209,7 +209,7 @@ const uranusPath = new THREE.Line(uranusPathGeometry, uranusPathMaterial);
 scene.add(uranusPath);
 
 const neptuneGeometry = new THREE.SphereGeometry(3.5, 32, 32);
-const neptuneTexture = new THREE.TextureLoader().load('neptune.png');
+const neptuneTexture = new THREE.TextureLoader().load('neptune.jpeg');
 const neptuneMaterial = new THREE.MeshBasicMaterial({ map: neptuneTexture });
 
 
