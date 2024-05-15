@@ -39,8 +39,15 @@
 				Neptune
 			</button>
 		</div>
-    <script src="https://threejs.org/build/three.js"></script>
-    <script src="main.js"></script>
+		<script type="importmap">
+			{
+				"imports": {
+					"three": "https://cdn.jsdelivr.net/npm/three@0.156.0/build/three.module.js",
+					"three/addons/": "https://cdn.jsdelivr.net/npm/three@0.156.0/examples/jsm/"
+				}
+			}
+		</script>
+    <script type="module" src="main.js"></script>
   </div>
 </body>
 </html>
