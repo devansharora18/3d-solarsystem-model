@@ -7,8 +7,8 @@ body {
   }
   
   canvas {
-	width: 100vw;
-	height: 100vh;
+	width: full;
+	height: full;
 	position: absolute;
 	top: 0;
 	left: 0;

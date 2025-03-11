@@ -1,14 +1,17 @@
 import * as THREE from 'three';
 
+// Scene setup
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 const renderer = new THREE.WebGLRenderer();
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 
+// Background
 const backgroundTexture = new THREE.TextureLoader().load('black.jpeg');
 scene.background = backgroundTexture;
 
+// Sun
 const sunGeometry = new THREE.SphereGeometry(10, 32, 32);
 const sunTexture = new THREE.TextureLoader().load('sun.jpeg');
 const sunMaterial = new THREE.MeshBasicMaterial({ map: sunTexture });
@@ -16,402 +19,143 @@ const sun = new THREE.Mesh(sunGeometry, sunMaterial);
 scene.add(sun);
 sun.name = 'sun';
 
-const planets = []
+// Planets data
+const planetsData = [
+  { name: 'mercury', radius: 1, distance: 18, speed: 0.002, texture: 'mercury.jpeg' },
+  { name: 'venus', radius: 1.8, distance: 30, speed: 0.0006, texture: 'venus.jpeg' },
+  { name: 'earth', radius: 2, distance: 40, speed: 0.0004, texture: 'earth.jpeg' },
+  { name: 'mars', radius: 1.8, distance: 50, speed: 0.0008, texture: 'mars.jpeg' },
+  { name: 'jupiter', radius: 5, distance: 100, speed: 0.00005, texture: 'jupiter.jpeg' },
+  { name: 'saturn', radius: 5, distance: 150, speed: 0.00002, texture: 'saturn.jpeg' },
+  { name: 'uranus', radius: 3.5, distance: 180, speed: 0.00001, texture: 'uranus.jpeg' },
+  { name: 'neptune', radius: 3.5, distance: 200, speed: 0.000005, texture: 'neptune.jpeg' },
+];
 
-const earthGeometry = new THREE.SphereGeometry(2, 32, 32);
+// Create planets and paths
+const planets = [];
+for (const planetData of planetsData) {
+  const geometry = new THREE.SphereGeometry(planetData.radius, 32, 32);
+  const texture = new THREE.TextureLoader().load(planetData.texture);
+  const material = new THREE.MeshBasicMaterial({ map: texture });
+  const planet = new THREE.Mesh(geometry, material);
+  scene.add(planet);
+  planet.name = planetData.name;
+  planets.push(planet);
 
-const earthDayTexture = new THREE.TextureLoader().load('earth.jpeg');
-const earthDayMaterial = new THREE.MeshBasicMaterial({ map: earthDayTexture });
-
-const earth = new THREE.Mesh(earthGeometry, earthDayMaterial);
-scene.add(earth);
-planets.push(earth);
-earth.name = 'earth';
-
-earth.position.x = 40;
-
-const pathPoints = [];
-const radius = 40;
-const segments = 100;
-for (let i = 0; i <= segments; i++) {
-  const theta = (i / segments) * Math.PI * 2;
-  const x = radius * Math.cos(theta);
-  const z = radius * Math.sin(theta);
-  pathPoints.push(new THREE.Vector3(x, 0, z));
+  const pathPoints = [];
+  const segments = 100;
+  for (let i = 0; i <= segments; i++) {
+    const theta = (i / segments) * Math.PI * 2;
+    const x = planetData.distance * Math.cos(theta);
+    const z = planetData.distance * Math.sin(theta);
+    pathPoints.push(new THREE.Vector3(x, 0, z));
+  }
+  const pathGeometry = new THREE.BufferGeometry().setFromPoints(pathPoints);
+  const pathMaterial = new THREE.LineBasicMaterial({ color: "rgb(255, 255, 255)" });
+  const path = new THREE.Line(pathGeometry, pathMaterial);
+  scene.add(path);
 }
 
-const pathGeometry = new THREE.BufferGeometry().setFromPoints(pathPoints);
-const pathMaterial = new THREE.LineBasicMaterial({ color: "rgb(255, 255, 255)" });;
-const path = new THREE.Line(pathGeometry, pathMaterial);
-scene.add(path);
+// Asteroid belt
+const asteroidGeometry = new THREE.SphereGeometry(0.2, 10, 10);
+const asteroidMaterial = new THREE.MeshBasicMaterial({ color: 0x888888 });
+const numAsteroids = 1000;
+const asteroidBeltRadius = 70;
+const minRadius = 70;
+const maxRadius = 80;
+const asteroids = [];
+const beltRadius = [];
+for (let i = 0; i < numAsteroids; i++) {
+  const asteroid = new THREE.Mesh(asteroidGeometry, asteroidMaterial);
+  asteroids.push(asteroid);
+  scene.add(asteroid);
 
-const mercuryGeometry = new THREE.SphereGeometry(1, 32, 32);
-const mercuryTexture = new THREE.TextureLoader().load('mercury.jpeg');
-const mercuryMaterial = new THREE.MeshBasicMaterial({ map: mercuryTexture });
-const mercury = new THREE.Mesh(mercuryGeometry, mercuryMaterial);
-
-scene.add(mercury);
-planets.push(mercury);
-mercury.name = 'mercury';
-
-mercury.position.x = 18;
-
-const mercuryPathPoints = [];
-const mercuryRadius = 18;
-const mercurySegments = 100;
-for (let i = 0; i <= mercurySegments; i++) {
-  const theta = (i / mercurySegments) * Math.PI * 2;
-  const x = mercuryRadius * Math.cos(theta);
-  const z = mercuryRadius * Math.sin(theta);
-  mercuryPathPoints.push(new THREE.Vector3(x, 0, z));
+  const angle = Math.random() * Math.PI * 5;
+  const radius = Math.random() * (maxRadius - minRadius) + minRadius;
+  beltRadius.push(radius);
+  const x = Math.cos(angle) * radius;
+  const z = Math.sin(angle) * asteroidBeltRadius;
+  const y = Math.random() * 2 - 1;
+  asteroid.position.set(x, y, z);
 }
 
-const mercuryPathGeometry = new THREE.BufferGeometry().setFromPoints(mercuryPathPoints);
-const mercuryPathMaterial = new THREE.LineBasicMaterial({ color: "rgb(255, 255, 255)" });;
-const mercuryPath = new THREE.Line(mercuryPathGeometry, mercuryPathMaterial);
-scene.add(mercuryPath);
-
-
-const venusGeometry = new THREE.SphereGeometry(1.8, 32, 32);
-const venusTexture = new THREE.TextureLoader().load('venus.jpeg');
-const venusMaterial = new THREE.MeshBasicMaterial({ map: venusTexture });
-const venus = new THREE.Mesh(venusGeometry, venusMaterial);
-
-scene.add(venus);
-planets.push(venus);
-venus.name = 'venus';
-
-venus.position.x = 30;
-
-const venusPathPoints = [];
-const venusRadius = 30;
-const venusSegments = 100;
-for (let i = 0; i <= venusSegments; i++) {
-  const theta = (i / venusSegments) * Math.PI * 2;
-  const x = venusRadius * Math.cos(theta);
-  const z = venusRadius * Math.sin(theta);
-  venusPathPoints.push(new THREE.Vector3(x, 0, z));
-}
-
-const venusPathGeometry = new THREE.BufferGeometry().setFromPoints(venusPathPoints);
-const venusPathMaterial = new THREE.LineBasicMaterial({ color: "rgb(255, 255, 255)" });;
-const venusPath = new THREE.Line(venusPathGeometry, venusPathMaterial);
-scene.add(venusPath);
-
-const marsGeometry = new THREE.SphereGeometry(1.8, 32, 32);
-const marsTexture = new THREE.TextureLoader().load('mars.jpeg');
-const marsMaterial = new THREE.MeshBasicMaterial({ map: marsTexture });
-const mars = new THREE.Mesh(marsGeometry, marsMaterial);
-
-scene.add(mars);
-planets.push(mars);
-mars.name = 'mars';
-
-mars.position.x = 50;
-
-const marsPathPoints = [];
-const marsRadius = 50;
-const marsSegments = 100;
-for (let i = 0; i <= marsSegments; i++) {
-  const theta = (i / marsSegments) * Math.PI * 2;
-  const x = marsRadius * Math.cos(theta);
-  const z = marsRadius * Math.sin(theta);
-  marsPathPoints.push(new THREE.Vector3(x, 0, z));
-}
-
-const marsPathGeometry = new THREE.BufferGeometry().setFromPoints(marsPathPoints);
-const marsPathMaterial = new THREE.LineBasicMaterial({ color: "rgb(255, 255, 255)" });;
-const marsPath = new THREE.Line(marsPathGeometry, marsPathMaterial);
-scene.add(marsPath);
-
-const jupiterGeometry = new THREE.SphereGeometry(5, 32, 32);
-const jupiterTexture = new THREE.TextureLoader().load('jupiter.jpeg');
-const jupiterMaterial = new THREE.MeshBasicMaterial({ map: jupiterTexture });
-const jupiter = new THREE.Mesh(jupiterGeometry, jupiterMaterial);
-
-scene.add(jupiter);
-
-planets.push(jupiter);
-jupiter.name = 'jupiter';
-
-jupiter.position.x = 100;
-
-const jupiterPathPoints = [];
-const jupiterRadius = 100;
-const jupiterSegments = 100;
-for (let i = 0; i <= jupiterSegments; i++) {
-	const theta = (i / jupiterSegments) * Math.PI * 2;
-  const x = jupiterRadius * Math.cos(theta);
-  const z = jupiterRadius * Math.sin(theta);
-  jupiterPathPoints.push(new THREE.Vector3(x, 0, z));
-}
-const jupiterPathGeometry = new THREE.BufferGeometry().setFromPoints(jupiterPathPoints);
-const jupiterPathMaterial = new THREE.LineBasicMaterial({ color: "rgb(255, 255, 255)" });
-const jupiterPath = new THREE.Line(jupiterPathGeometry, jupiterPathMaterial);
-
-scene.add(jupiterPath);
-
-const saturnGeometry = new THREE.SphereGeometry(5, 32, 32);
-const saturnTexture = new THREE.TextureLoader().load('saturn.jpeg');
-const saturnMaterial = new THREE.MeshBasicMaterial({ map: saturnTexture })
-const saturn = new THREE.Mesh(saturnGeometry, saturnMaterial);
-
-scene.add(saturn);
-planets.push(saturn);
-saturn.name = 'saturn';
-
-saturn.position.x = 150;
-
-const saturnPathPoints = [];
-const saturnRadius = 150;
-const saturnSegments = 100;
-for (let i = 0; i <= saturnSegments; i++) {
-	const theta = (i / saturnSegments) * Math.PI * 2;
-  const x = saturnRadius * Math.cos(theta);
-  const z = saturnRadius * Math.sin(theta);
-  saturnPathPoints.push(new THREE.Vector3(x, 0, z));
-}
-const saturnPathGeometry = new THREE.BufferGeometry().setFromPoints(saturnPathPoints);
-const saturnPathMaterial = new THREE.LineBasicMaterial({ color: "rgb(255, 255, 255)" });
-const saturnPath = new THREE.Line(saturnPathGeometry, saturnPathMaterial);
-scene.add(saturnPath);
-
+// Saturn rings
 const saturnRingsGeometry = new THREE.RingGeometry(6, 10, 64);
 const saturnRingsTexture = new THREE.TextureLoader().load('saturn-ring.jpeg');
 const saturnRingsMaterial = new THREE.MeshBasicMaterial({ map: saturnRingsTexture, side: THREE.DoubleSide, transparent: true });
 const saturnRings = new THREE.Mesh(saturnRingsGeometry, saturnRingsMaterial);
-saturn.add(saturnRings);
-
+scene.getObjectByName('saturn').add(saturnRings);
 saturnRings.rotation.x = Math.PI / 2;
 
-const uranusGeometry = new THREE.SphereGeometry(3.5, 32, 32);
-const uranusTexture = new THREE.TextureLoader().load('uranus.jpeg');
-const uranusMaterial = new THREE.MeshBasicMaterial({ map: uranusTexture })
-
-const uranus = new THREE.Mesh(uranusGeometry, uranusMaterial);
-scene.add(uranus);
-
-planets.push(uranus);
-uranus.name = 'uranus';
-
-uranus.position.x = 180;
-
-const uranusPathPoints = [];
-const uranusRadius = 180;
-const uranusSegments = 100;
-for (let i = 0; i <= uranusSegments; i++) {
-	const theta = (i / uranusSegments) * Math.PI * 2;
-  const x = uranusRadius * Math.cos(theta);
-  const z = uranusRadius * Math.sin(theta);
-  uranusPathPoints.push(new THREE.Vector3(x, 0, z));
-}
-const uranusPathGeometry = new THREE.BufferGeometry().setFromPoints(uranusPathPoints);
-const uranusPathMaterial = new THREE.LineBasicMaterial({ color: "rgb(255, 255, 255)" })
-const uranusPath = new THREE.Line(uranusPathGeometry, uranusPathMaterial);
-scene.add(uranusPath);
-
-const neptuneGeometry = new THREE.SphereGeometry(3.5, 32, 32);
-const neptuneTexture = new THREE.TextureLoader().load('neptune.jpeg');
-const neptuneMaterial = new THREE.MeshBasicMaterial({ map: neptuneTexture });
-
-
-const neptune = new THREE.Mesh(neptuneGeometry, neptuneMaterial);
-scene.add(neptune);
-
-planets.push(neptune);
-neptune.name = 'neptune';
-
-neptune.position.x = 200;
-
-const neptunePathPoints = [];
-const neptuneRadius = 200;
-const neptuneSegments = 100;
-for (let i = 0; i <= neptuneSegments; i++) {
-	const theta = (i / neptuneSegments) * Math.PI * 2;
-  const x = neptuneRadius * Math.cos(theta);
-  const z = neptuneRadius * Math.sin(theta);
-  neptunePathPoints.push(new THREE.Vector3(x, 0, z));
-}
-const neptunePathGeometry = new THREE.BufferGeometry().setFromPoints(neptunePathPoints);
-const neptunePathMaterial = new THREE.LineBasicMaterial({ color: "rgb(255, 255, 255)" });
-const neptunePath = new THREE.Line(neptunePathGeometry, neptunePathMaterial);
-scene.add(neptunePath);
-
-const asteroidGeometry = new THREE.SphereGeometry(0.2, 10, 10);
-const asteroidMaterial = new THREE.MeshBasicMaterial({ color: 0x888888 });
-
-const numAsteroids = 1000;
-const asteroidBeltRadius = 70;
-const asteroids = [];
-
-const minRadius = 70;
-const maxRadius = 80;
-const beltRadius = [];
-
-for (let i = 0; i < numAsteroids; i++) {
-  const asteroid = new THREE.Mesh(asteroidGeometry, asteroidMaterial);
-  asteroids.push(asteroid);
-
-  const angle = Math.random() * Math.PI * 5;
-  const radius = Math.random() * (maxRadius - minRadius) + minRadius; // Random radius between minRadius and maxRadius
-  beltRadius.push(radius);
-	const x = Math.cos(angle) * radius;
-  const z = Math.sin(angle) * asteroidBeltRadius;
-  const y = Math.random() * 2 - 1;
-
-  asteroid.position.set(x, y, z);
-
-  scene.add(asteroid);
-}
-
+// Animation
 let focused_object = null;
+function animate() {
+  requestAnimationFrame(animate);
 
-const animate = () => {
-	requestAnimationFrame(animate);
+  sun.rotation.y += 0.005;
 
-	sun.rotation.y += 0.005;
-	
-	earth.rotation.y += 0.01;
-	earth.position.x = 40 * Math.cos(Date.now() * 0.0004);
-	earth.position.z = 40 * Math.sin(Date.now() * 0.0004);
-
-	venus.rotation.y += 0.01;
-	venus.position.x = 30 * Math.cos(Date.now() * 0.0006);
-	venus.position.z = 30 * Math.sin(Date.now() * 0.0006);
-
-	mercury.rotation.y += 0.004;
-	mercury.position.x = 18 * Math.cos(Date.now() * 0.002);
-	mercury.position.z = 18 * Math.sin(Date.now() * 0.002);
-
-	mars.rotation.y += 0.004;
-	mars.position.x = 50 * Math.cos(Date.now() * 0.0008);
-	mars.position.z = 50 * Math.sin(Date.now() * 0.0008);
-
-	jupiter.rotation.y += 0.07;
-	jupiter.position.x = 100 * Math.cos(Date.now() * 0.00005);
-	jupiter.position.z = 100 * Math.sin(Date.now() * 0.00005);
-
-	saturn.rotation.y += 0.07;
-	saturn.position.x = 150 * Math.cos(Date.now() * 0.00002);
-	saturn.position.z = 150 * Math.sin(Date.now() * 0.00002);
-
-	uranus.rotation.y += 0.07;
-	uranus.position.x = 180 * Math.cos(Date.now() * 0.00001);
-	uranus.position.z = 180 * Math.sin(Date.now() * 0.00001);
-
-	neptune.rotation.y += 0.07;
-	neptune.position.x = 200 * Math.cos(Date.now() * 0.000005);
-	neptune.position.z = 200 * Math.sin(Date.now() * 0.000005);
-
-	//saturnRings.rotation.x += 0.07;
+  for (const planet of planets) {
+    planet.rotation.y += 0.01;
+    const planetData = planetsData.find(data => data.name === planet.name);
+    planet.position.x = planetData.distance * Math.cos(Date.now() * planetData.speed);
+    planet.position.z = planetData.distance * Math.sin(Date.now() * planetData.speed);
+  }
 
   for (let i = 0; i < asteroids.length; i++) {
     const asteroid = asteroids[i];
-
     asteroid.rotation.y += 0.01;
 
-		const radius = Math.random() * (maxRadius - minRadius) + minRadius;
-
-    const angle = (i / asteroids.length) * Math.PI * 2 + (Date.now() * 0.0000001 * i * beltRadius[i]/100);
-
-    const x = Math.cos(angle) * beltRadius[i];
-    const z = Math.sin(angle) * beltRadius[i];
-		
+    const radius = beltRadius[i];
+    const angle = (i / asteroids.length) * Math.PI * 2 + (Date.now() * 0.0000001 * i * radius / 100);
+    const x = Math.cos(angle) * radius;
+    const z = Math.sin(angle) * radius;
     asteroid.position.set(x, asteroid.position.y, z);
-	}
+  }
 
+  if (focused_object != null) {
+    camera.lookAt(focused_object.position);
+    camera.position.set(focused_object.position.x, focused_object.position.y + 10, focused_object.position.z - 30);
+  } else {
+    camera.lookAt(scene.position);
+  }
 
-	if (focused_object != null) {
-		camera.lookAt(focused_object.position);
-		camera.position.set(focused_object.position.x, focused_object.position.y + 10, focused_object.position.z - 30);	
-	} else {
-		camera.lookAt(scene.position);
-	}
-
-	
-	renderer.render(scene, camera);
+  renderer.render(scene, camera);
 }
 animate();
 
-renderer.domElement.addEventListener('click', onMouseClick, false);
-
-function onMouseClick(event) {
-	console.log('mouse click');
-  // Calculate mouse position in normalized device coordinates
-  const mouse = new THREE.Vector2();
-  mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-  mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
-
-  // Cast a ray from the mouse position
-  const raycaster = new THREE.Raycaster();
-  raycaster.setFromCamera(mouse, camera);
-
-  // Check for intersections with the objects in the scene
-  const intersects = raycaster.intersectObjects(scene.children, true);
-
-  if (intersects.length > 0) {
-		console.log('intersected');
-    // An object was clicked
-    const clickedObject = intersects[0].object;
-		console.log(clickedObject.name);
-
-    // Check the identifier of the clicked object and execute the corresponding function
-    switch (clickedObject.name) {
-      case 'sun':
-				console.log('sun')
-        focused_object = sun;
-        break;
-      case 'earth':
-				console.log('earth')
-        focused_object = earth;
-				break;
-			case 'venus':
-				console.log('venus')
-        focused_object = venus;
-				break;
-			case 'mercury':
-				console.log('mercury')
-        focused_object = mercury;
-				break;
-			case 'mars':
-				console.log('mars')
-        focused_object = mars;
-				break;
-			case 'jupiter':
-				console.log('jupiter')
-        focused_object = jupiter;
-				break;
-			case 'saturn':
-				console.log('saturn')
-        focused_object = saturn;
-				break;
-			case 'uranus':
-				console.log('uranus')
-        focused_object = uranus;
-				break;
-			case 'neptune':
-				console.log('neptune')
-        focused_object = neptune;
-				break;
-    }
-  }
-}
-
-
+// Camera setup
 camera.position.set(0, 30, 100);
 camera.rotation.set(-Math.PI / 6, 0, 0);
 camera.lookAt(scene.position);
 
+// Event listeners
 let isDragging = false;
 let previousMousePosition = {
   x: 0,
   y: 0
 };
 
+renderer.domElement.addEventListener('click', onMouseClick);
 renderer.domElement.addEventListener('mousedown', onMouseDown);
 renderer.domElement.addEventListener('mousemove', onMouseMove);
 renderer.domElement.addEventListener('mouseup', onMouseUp);
 renderer.domElement.addEventListener('wheel', onMouseWheel);
+
+function onMouseClick(event) {
+  const mouse = new THREE.Vector2();
+  mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+  mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+  const raycaster = new THREE.Raycaster();
+  raycaster.setFromCamera(mouse, camera);
+
+  const intersects = raycaster.intersectObjects(scene.children, true);
+
+  if (intersects.length > 0) {
+    const clickedObject = intersects[0].object;
+    focused_object = clickedObject;
+  }
+}
 
 function onMouseDown(event) {
   isDragging = true;
@@ -439,7 +183,6 @@ function onMouseMove(event) {
   const quaternion = new THREE.Quaternion().setFromEuler(rotation);
 
   camera.position.applyQuaternion(quaternion);
-  //camera.lookAt(scene.position);
 
   previousMousePosition = {
     x: event.clientX,
@@ -454,13 +197,12 @@ function onMouseUp() {
 function onMouseWheel(event) {
   const zoomSpeed = 0.1;
   const deltaZoom = event.deltaY * zoomSpeed;
-	if (camera.position.z - deltaZoom < 0)
-  camera.position.z = 0;
-	else if (camera.position.z - deltaZoom > 300)
-  camera.position.z = 300;
-	else
-	camera.position.z -= deltaZoom;
-	//camera.lookAt(scene.position);
+  if (camera.position.z - deltaZoom < 0)
+    camera.position.z = 0;
+  else if (camera.position.z - deltaZoom > 300)
+    camera.position.z = 300;
+  else
+    camera.position.z -= deltaZoom;
 }
 
 function toRadians(angle) {
@@ -468,53 +210,34 @@ function toRadians(angle) {
 }
 
 function reset(event) {
-	camera.position.set(0, 30, 100);
-	camera.rotation.set(-Math.PI / 6, 0, 0);
-	camera.lookAt(scene.position);
-	focused_object = null;
-	console.log('reset');
-
+  camera.position.set(0, 30, 100);
+  camera.rotation.set(-Math.PI / 6, 0, 0);
+  camera.lookAt(scene.position);
+  focused_object = null;
 }
 
 let button = document.getElementById('reset-btn');
 button.addEventListener('click', reset);
 
-let mercury_btn = document.getElementById('mercury');
-mercury_btn.addEventListener('click', function(event) {
-	focused_object = mercury;
-});
+// Planet buttons
+for (const planetData of planetsData) {
+  const button = document.getElementById(planetData.name);
+  button.addEventListener('click', function(event) {
+    focused_object = scene.getObjectByName(planetData.name);
+  });
+}
 
-let venus_btn = document.getElementById('venus');
-venus_btn.addEventListener('click', function(event) {
-	focused_object = venus;
-});
+// Responsive design
+window.addEventListener('resize', onWindowResize, false);
 
-let earth_btn = document.getElementById('earth');
-earth_btn.addEventListener('click', function(event) {
-	focused_object = earth;
-});
+function onWindowResize() {
+  const width = window.innerWidth;
+  const height = window.innerHeight;
 
-let mars_btn = document.getElementById('mars');
-mars_btn.addEventListener('click', function(event) {
-	focused_object = mars;
-});
+  camera.aspect = width / height;
+  camera.updateProjectionMatrix();
 
-let jupiter_btn = document.getElementById('jupiter');
-jupiter_btn.addEventListener('click', function(event) {
-	focused_object = jupiter;
-});
-
-let saturn_btn = document.getElementById('saturn');
-saturn_btn.addEventListener('click', function(event) {
-	focused_object = saturn;
-});
-
-let uranus_btn = document.getElementById('uranus');
-uranus_btn.addEventListener('click', function(event) {
-	focused_object = uranus;
-});
-
-let neptune_btn = document.getElementById('neptune');
-neptune_btn.addEventListener('click', function(event) {
-	focused_object = neptune;
-});
+  renderer.setSize(width, height);
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.render(scene, camera);
+}
