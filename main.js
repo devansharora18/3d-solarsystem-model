@@ -241,3 +241,20 @@ function onWindowResize() {
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
   renderer.render(scene, camera);
 }
+
+
+let timeout;
+
+function hideCursor() {
+    document.body.classList.add("hidden-cursor");
+}
+
+function resetTimer() {
+    document.body.classList.remove("hidden-cursor");
+    clearTimeout(timeout);
+    timeout = setTimeout(hideCursor, 3000); // Hide cursor after 3 seconds of inactivity
+}
+
+document.addEventListener("mousemove", resetTimer);
+
+resetTimer(); // Start the timer initially

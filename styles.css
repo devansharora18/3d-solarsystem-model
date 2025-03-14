@@ -38,3 +38,7 @@ body {
 	display: flex;
 	flex-direction: column;
 }
+
+body.hidden-cursor {
+	cursor: none;
+}
